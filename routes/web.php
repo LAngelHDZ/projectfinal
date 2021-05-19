@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
@@ -24,3 +24,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/admin/panel',[HomeController::class,'admin'])->name('admin');
 Route::get('/admin/panel/alumnos',[AdminController::class,'alumno'])->name('alumno');
+Route::get('/admin/panel/registrar_Alumno',[AdminController::class,'registraralumno'])->name('registrarAlumno');
+Route::post('/admin/panel/registroalumno',[AdminController::class,'registroA'])->name('registraform');
+Route::get('/admin/panel/administrator',[AdminController::class,'admin'])->name('admins');

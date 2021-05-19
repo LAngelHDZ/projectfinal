@@ -13,7 +13,7 @@
                <a class="nav-item nav-link" href="{{ route('alumno') }}">{{ __('Alumno') }}<span class="sr-only">(current)</span></a>
                <a class="nav-item nav-link" href="#">Profesores</a>
                <a class="nav-item nav-link" href="#">Horarios</a>
-               <a class="nav-item nav-link" href="#"></a>
+               <a class="nav-item nav-link" href="{{route('admins')}}">Administrador</a>
            </div>
        </div>
    </nav>
