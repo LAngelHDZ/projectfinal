@@ -41,9 +41,14 @@ class LoginController extends Controller
 
     public function redirectPath()
     {
-        if(FacadesAuth::user()->type_user){
+        if(FacadesAuth::user()->type_user==0){
             return '/admin/panel';
+        } elseif(FacadesAuth::user()->type_user==1){
+
+            return '/alumno/panel';
+        }else{
+            return '/docente/panel';
         }
-        return '/home';
+        
     }
 }

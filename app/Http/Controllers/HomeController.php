@@ -23,12 +23,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return view('alumno.panel');
     }
-
 
     public function admin(){
 
         return view('admin.panel');
     }
+
+    public function registre(){
+
+        return view('auth.register');
+    }
+
+    
 }

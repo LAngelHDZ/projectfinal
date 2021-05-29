@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('welcome')
 
 @section('content')
 <div class="container">
@@ -10,31 +10,15 @@
            </button>
            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
              <div class="navbar-nav">
-               <a class="nav-item nav-link" href="{{ route('alumno') }}">{{ __('Alumno') }}<span class="sr-only">(current)</span></a>
-               <a class="nav-item nav-link" href="#">Profesores</a>
+               <a class="nav-item nav-link" href="{{ route('alumno') }}">{{ __('Alumnos') }}</a>
+               <a class="nav-item nav-link" href="{{ route('docente') }}">{{ __('Profesores') }}</a>
+               <a class="nav-item nav-link" href="#">Materias</a>
                <a class="nav-item nav-link" href="#">Horarios</a>
                <a class="nav-item nav-link" href="{{route('admins')}}">Administrador</a>
            </div>
        </div>
    </nav>
  
-   {{-- <div class="row justify-content-center">
-       <div class="col-md-8">
-           <div class="card">
-               <div class="card-header">{{ __('Dashboard') }}</div>
-
-               <div class="card-body">
-                   @if (session('status'))
-                       <div class="alert alert-success" role="alert">
-                           {{ session('status') }}
-                       </div>
-                   @endif
-
-                   {{ __('Panel de administrador') }}
-               </div>
-           </div>
-       </div>
-   </div> --}}
 </div>
 @yield('contentadmin')
 </div>
