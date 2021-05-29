@@ -13,7 +13,7 @@ class AdminController extends Controller
 
     public function alumno(){
        $alumno = User::join('alumnos','users.id','=','alumnos.user_id')
-       ->select('users.name as alumno','alumnos.id as id_user','alumnos.matricula','alumnos.carrera','alumnos.semestre')->orderBy('alumnos.id','asc')->get();
+       ->select('users.id','users.name as nombre','users.apellidoP','users.apellidoM','alumnos.id as id_alumno','alumnos.matricula','alumnos.carrera','alumnos.semestre')->orderBy('alumnos.id','asc')->get();
         return view('admin.alumno',compact('alumno'));
 
     }
@@ -53,15 +53,14 @@ class AdminController extends Controller
     }
 
     public function updatealumno($id){
-        $id_A=alumno::join('users','users.id','=','alumnos.user_id')
-        ->select('alumnos.id',)->where('user_id',$id)->get();
-        $alumno=alumno::findOrFail($id_A);
-        $user=user::findOrFail($id);
-        return view('admin.updatealumno')->with(compact('alumno','user'));
-            
+        $id_U=alumno::select('user_id')->where('id',$id)->get();
+        $alumno=alumno::findOrFail($id);
+        $user=user::findOrFail($id_U);
+
+        return view('admin.updatealumno',compact('alumno','user'));
     }
 
-    public function update(Request $request){
+    public function updateA(Request $request){
         // $alumno= new alumno();
         // $user= new User();
         $idU=$request->idU;
@@ -79,17 +78,29 @@ class AdminController extends Controller
         $alumno->carrera=$request->input('carrera');
         $alumno->semestre=$request->input('semestre');
 
-        $user->save();
-        $alumno->save();
+        $user->update();
+        $alumno->update();
 
         return redirect()->route('alumno');
             
     }
 
+    public function destroyA(Request $request){
+        $idU=$request->idU;
+        $idA=$request->idA;
+        // $id_U=alumno::select('user_id')->where('id',$id)->get();
+        $alumno=alumno::findOrFail($idA);
+
+        $user=user::findOrFail($idU);
+        $alumno->delete();
+        $user->delete();
+        return redirect()->route('alumno');
+    }
+
 //Metodos para los profesores
     public function docente(){
         $docentes = User::join('docentes','users.id','=','docentes.user_id')
-       ->select('users.name as docente','docentes.id','docentes.matricula','docentes.rfc')->orderBy('docentes.id','asc')->get();
+       ->select('users.id as id_user','users.name as nombre','users.apellidoP','users.apellidoM','docentes.id','docentes.matricula','docentes.rfc')->orderBy('docentes.id','asc')->get();
         return view('admin.docente',compact('docentes'));
        
     }
@@ -102,13 +113,17 @@ class AdminController extends Controller
 
         $user= new User();
         $data = [
-            "name" => $request->nombre.' '.$request->ap.' '.$request->am,
+            "name" => $request->nombre,
+            "apellidoP" => $request->ap,
+            "apellidoM" => $request->am,
             "email" => $request->email,
             "password" => $request->password,
             "type_user" => 2
         ];
              User::create([
             'name' => $data['name'],
+            'apellidoP' => $data['apellidoP'],
+            'apellidoM' => $data['apellidoM'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'type_user'=> $data['type_user'],
@@ -124,8 +139,52 @@ class AdminController extends Controller
         return redirect()->route('docente');
     }
 
-   
+    public function updatedocente($id){
+        $id_U=docente::select('user_id')->where('id',$id)->get();
+        $docente=docente::findOrFail($id);
+        $user=user::findOrFail($id_U);
 
+        return view('admin.updatedocente',compact('docente','user'));
+    }
+
+    public function updateD(Request $request){
+        // $alumno= new alumno();
+        // $user= new User();
+        $idU=$request->idU;
+        $idD=$request->idD;
+        // $id_A=alumno::join('users','users.id','=','alumnos.user_id')
+        // ->select('alumnos.id',)->where('user_id',$id)->get();
+        $docente=docente::findOrFail($idD);
+        $user=user::findOrFail($idU);
+        $user->name=$request->input('nombre');
+        $user->apellidoP=$request->input('ap');
+        $user->apellidoM=$request->input('am');
+        $user->email=$request->input('email');
+        
+        $docente->matricula=$request->input('matricula');
+        $docente->RFC=$request->input('rfc');
+
+
+        $user->update();
+        $docente->update();
+
+        return redirect()->route('docente');
+            
+    }
+
+    public function destroyD(Request $request){
+        $idU=$request->idU;
+        $idD=$request->idD;
+        // $id_U=alumno::select('user_id')->where('id',$id)->get();
+        $docente=docente::findOrFail($idD);
+
+        $user=user::findOrFail($idU);
+        $docente->delete();
+        $user->delete();
+        return redirect()->route('docente');
+    }
+   
+//metodos admin
     public function admin(){
         return view('auth.register');
     }
