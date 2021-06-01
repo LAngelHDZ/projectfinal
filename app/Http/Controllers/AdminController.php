@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\alumno;
 use App\Models\docente;
+use App\Models\horario_dia;
+use App\Models\horario_materia;
 use App\Models\materia;
 use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
@@ -233,6 +235,121 @@ public function destroyM(Request $request){
     $materia=materia::findOrFail($idM);
     $materia->delete();
     return redirect()->route('materia');
+}
+
+//metodos crud cursos 
+
+public function curso(){
+    $cursos = horario_materia::join('docentes','horario_materias.docente_id','=','docentes.id')
+    ->join('materias','horario_materias.materia_id','=','materias.id')
+    ->join('users','users.id','=','docentes.user_id')
+    ->select('horario_materias.id','docentes.id as docente_id','materias.id as materia_id','materias.materia','materias.categoria','users.name','users.apellidoP','users.apellidoM')
+    ->orderBy('horario_materias.id','asc')->get();
+    return view('admin.curso',compact('cursos'));
+}
+
+public function registrarcurso(){ 
+    
+    $materias=materia::select('id','materia','semestre')->orderBy('id','asc')->get();
+    $docentes=docente::join('users','users.id','=','docentes.user_id')
+    ->select('users.id','users.name','users.apellidoP','users.apellidoM','docentes.id as docente_id','docentes.user_id')
+    ->orderBy('docentes.id','asc')->get();
+     return view('admin.registrarcurso',compact('materias','docentes')); 
+}
+
+public function registroC(Request $request){
+  $curso=new horario_materia();
+    $curso->docente_id=$request->docente;
+    $curso->materia_id=$request->materia;
+    $curso->save();
+    return redirect()->route('curso');
+}
+
+public function updatecurso($id){
+    $materias=materia::select('id','materia','semestre')->orderBy('id','asc')->get();
+    $docentes=docente::join('users','users.id','=','docentes.user_id')
+    ->select('users.id','users.name','users.apellidoP','users.apellidoM','docentes.id as docente_id','docentes.user_id')
+    ->orderBy('docentes.id','asc')->get();
+    $curso = horario_materia::join('docentes','horario_materias.docente_id','=','docentes.id')
+    ->join('materias','horario_materias.materia_id','=','materias.id')
+    ->join('users','users.id','=','docentes.user_id')
+    ->select('horario_materias.id','horario_materias.docente_id','horario_materias.materia_id','materias.materia','users.name','users.apellidoP','users.apellidoM')
+    ->where('horario_materias.id',$id)->get();
+    
+    return view('admin.updatecurso',compact('materias','docentes','curso'));
+}
+
+public function updateC(Request $request, $id){
+    
+    $curso=horario_materia::findOrFail($id);
+    $curso->docente_id=$request->input('docente');
+    $curso->materia_id=$request->input('materia');
+    $curso->update();
+    return redirect()->route('curso');   
+}
+
+public function destroyC(Request $request){
+    $idM=$request->idC;
+    $curso=horario_materia::findOrFail($idM);
+    $curso->delete();
+    return redirect()->route('curso');
+}
+
+//metodos crud de horarios
+public function horario($id){
+    $horarios = horario_materia::join('materias','horario_materias.materia_id','=','materias.id')
+    ->join('horario_dias','horario_dias.horarioM_id','=','horario_materias.id')
+    ->select('horario_materias.id as id_curso','horario_dias.id','horario_dias.horarioM_id','materias.materia','horario_dias.hora','horario_dias.dia','horario_dias.aula')
+    ->where('horario_dias.horarioM_id',$id)->orderBy('horario_dias.id','asc')->get();
+    return view('admin.horario',compact('horarios','id'));
+}
+
+public function registrarhorario($id){ 
+    
+     return view('admin.registrarhorario',compact('id')); 
+}
+
+public function registroH(Request $request){
+  $horario=new horario_dia();
+    $horario->hora=$request->hora;
+    $horario->dia=$request->dia;
+    $horario->aula=$request->aula;
+    $horario->horarioM_id=$request->id;
+    $horario->save();
+    
+    $alert="Horario agregado";
+    return back();
+    
+}
+
+public function updatehorario($id){
+    $materias=materia::select('id','materia','semestre')->orderBy('id','asc')->get();
+    $docentes=docente::join('users','users.id','=','docentes.user_id')
+    ->select('users.id','users.name','users.apellidoP','users.apellidoM','docentes.id as docente_id','docentes.user_id')
+    ->orderBy('docentes.id','asc')->get();
+    $curso = horario_materia::join('docentes','horario_materias.docente_id','=','docentes.id')
+    ->join('materias','horario_materias.materia_id','=','materias.id')
+    ->join('users','users.id','=','docentes.user_id')
+    ->select('horario_materias.id','horario_materias.docente_id','horario_materias.materia_id','materias.materia','users.name','users.apellidoP','users.apellidoM')
+    ->where('horario_materias.id',$id)->get();
+    
+    return view('admin.updatecurso',compact('materias','docentes','curso'));
+}
+
+public function updateH(Request $request, $id){
+    
+    $curso=horario_materia::findOrFail($id);
+    $curso->docente_id=$request->input('docente');
+    $curso->materia_id=$request->input('materia');
+    $curso->update();
+    return redirect()->route('curso');   
+}
+
+public function destroyH(Request $request){
+    $idM=$request->idC;
+    $curso=horario_materia::findOrFail($idM);
+    $curso->delete();
+    return redirect()->route('curso');
 }
 
 //metodos admin

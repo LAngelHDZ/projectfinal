@@ -39,13 +39,29 @@ Route::post('/admin/panel/registrodocente',[AdminController::class,'registroD'])
 Route::get('/admin/panel/update_docente/{id}/',[AdminController::class,'updatedocente'])->name('updateDocente');
 Route::patch('/admin/panel/update_docente/',[AdminController::class,'updateD'])->name('updateformD');
 Route::delete('/admin/panel/docente',[AdminController::class,'destroyD'])->name('docentedel');
-
+//Rutas CRUD materia
 Route::get('/admin/panel/materias',[AdminController::class,'materia'])->name('materia');
 Route::get('/admin/panel/registrar_materia',[AdminController::class,'registrarmateria'])->name('registrarMateria');
 Route::post('/admin/panel/registromateria',[AdminController::class,'registroM'])->name('registraformM');
 Route::get('/admin/panel/update_materia/{id}/',[AdminController::class,'updatemateria'])->name('updateMateria');
 Route::patch('/admin/panel/update_materia/{id}/',[AdminController::class,'updateM'])->name('updateformM');
 Route::delete('/admin/panel/materias',[AdminController::class,'destroyM'])->name('materiadel');
+//Rutas CRUD cursos
+Route::get('/admin/panel/cursos',[AdminController::class,'curso'])->name('curso');
+Route::get('/admin/panel/registrar_curso',[AdminController::class,'registrarcurso'])->name('registrarCurso');
+Route::post('/admin/panel/registrocurso',[AdminController::class,'registroC'])->name('registraformC');
+Route::get('/admin/panel/update_curso/{id}/',[AdminController::class,'updatecurso'])->name('updateCurso');
+Route::patch('/admin/panel/update_curso/{id}/',[AdminController::class,'updateC'])->name('updateformC');
+Route::delete('/admin/panel/cursos',[AdminController::class,'destroyC'])->name('cursodel');
+//rutas crud horario
+Route::get('/admin/panel/horarios/{id}/',[AdminController::class,'horario'])->name('horario');
+Route::get('/admin/panel/horarios/{id}/reg',[AdminController::class,'registrarhorario'])->name('registrarHorario');
+Route::post('/admin/panel/registrohorario',[AdminController::class,'registroH'])->name('registrarformH');
+Route::get('/admin/panel/update_horario/{id}/',[AdminController::class,'updatehorario'])->name('updateHorario');
+Route::patch('/admin/panel/update_horario/{id}/',[AdminController::class,'updateH'])->name('updateformH');
+Route::delete('/admin/panel/horarios',[AdminController::class,'destroyH'])->name('horariodel');
+
+
 
 Route::get('/admin/panel/administrator/',[AdminController::class,'admin'])->name('admins');
 Route::get('/register',[HomeController::class,'registre'])->name('registre');

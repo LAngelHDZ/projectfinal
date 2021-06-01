@@ -24,9 +24,12 @@
               </tr>
             </thead>
             <tbody>
+              @php
+              $int=0
+          @endphp
               @foreach ($docentes as $docente)
               <tr>
-                <th scope="row">{{$docente->id}}</th>
+                <th scope="row">{{$int+=1}}</th>
                 <td>{{$docente->matricula}}</td>
                 <td>{{$docente->nombre.' '.$docente->apellidoP.' '.$docente->apellidoM}}</td>
                 <td class="px-4 bg-light">{{$docente->rfc}}</td>

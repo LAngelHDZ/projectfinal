@@ -19,7 +19,7 @@ class CreateHorarioDiasTable extends Migration
             $table->String('dia');
             $table->String('aula');
             $table->unsignedBigInteger('horarioM_id');
-            $table->foreign('horarioM_id')->references('id')->on('horario_materias');
+            $table->foreign('horarioM_id')->references('id')->on('horario_materias')->onDelete('cascade');
             $table->timestamps();
         });
     }

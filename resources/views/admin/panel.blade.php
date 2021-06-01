@@ -12,8 +12,8 @@
              <div class="navbar-nav">
                <a class="nav-item nav-link" href="{{ route('alumno') }}">{{ __('Alumnos') }}</a>
                <a class="nav-item nav-link" href="{{ route('docente') }}">{{ __('Profesores') }}</a>
-               <a class="nav-item nav-link" href="{{route('materia') }}">Materias</a>
-               <a class="nav-item nav-link" href="#">Horarios</a>
+               <a class="nav-item nav-link" href="{{route('materia') }}">{{ __('Materias') }}</a>
+               <a class="nav-item nav-link" href="{{route('curso') }}">{{ __('Cursos') }}</a>
                <a class="nav-item nav-link" href="{{route('admins')}}">Administrador</a>
            </div>
        </div>

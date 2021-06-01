@@ -25,9 +25,12 @@
               </tr>
             </thead>
             <tbody>
+              @php
+              $int=0
+          @endphp
               @foreach ($alumno as $item)
               <tr>
-                <th class="pt-3 " scope="row ">{{$item->id_alumno}}</th>
+                <th class="pt-3 " scope="row ">{{$int+=1}}</th>
                 <td class="pt-3">{{$item->matricula}}</td>
                 <td class="pt-3">{{$item->nombre.' '.$item->apellidoP.' '.$item->apellidoM}}</td>
                 <td class="px-4 bg-light pt-3">{{$item->carrera}}</td>
