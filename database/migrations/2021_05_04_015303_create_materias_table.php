@@ -18,6 +18,7 @@ class CreateMateriasTable extends Migration
             $table->String('materia');
             $table->String('descripcion');
             $table->String('categoria');
+            $table->integer('semestre');
             $table->timestamps();
         });
     }

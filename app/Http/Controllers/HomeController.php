@@ -28,7 +28,7 @@ class HomeController extends Controller
 
     public function admin(){
 
-        return view('admin.panel');
+        return view('admin.main');
     }
 
     public function registre(){

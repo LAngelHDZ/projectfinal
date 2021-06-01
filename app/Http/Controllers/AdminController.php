@@ -6,11 +6,17 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\alumno;
 use App\Models\docente;
+use App\Models\materia;
 use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
-    //
+    //metodod main panel
 
+    public function main(){
+        return view('admin.panel');
+    }
+
+    //metodos crud de alumnos
     public function alumno(){
        $alumno = User::join('alumnos','users.id','=','alumnos.user_id')
        ->select('users.id','users.name as nombre','users.apellidoP','users.apellidoM','alumnos.id as id_alumno','alumnos.matricula','alumnos.carrera','alumnos.semestre')->orderBy('alumnos.id','asc')->get();
@@ -184,6 +190,51 @@ class AdminController extends Controller
         return redirect()->route('docente');
     }
    
+
+//metodos de agregar materias
+
+public function materia(){
+    $materias = materia::select('id','materia','descripcion','categoria','semestre')->orderBy('id','asc')->get();
+    return view('admin.materia',compact('materias'));
+}
+
+public function registrarmateria(){  
+     return view('admin.registrarmateria'); 
+}
+
+public function registroM(Request $request){
+  $materia=new materia();
+    $materia->materia=$request->materia;
+    $materia->descripcion=$request->descripcion;
+    $materia->categoria=$request->carrera;
+    $materia->semestre=$request->semestre;
+    $materia->save();
+    return redirect()->route('materia');
+}
+
+public function updatemateria($id){
+    $materia=materia::select('id','materia','descripcion','categoria','semestre')->where('id',$id)->get();
+    return view('admin.updatemateria',compact('materia'));
+}
+
+public function updateM(Request $request, $id){
+    
+    $materia=materia::findOrFail($id);
+    $materia->materia=$request->input('materia');
+    $materia->descripcion=$request->input('descripcion');
+    $materia->categoria=$request->input('carrera');
+    $materia->semestre=$request->input('semestre');
+    $materia->update();
+    return redirect()->route('materia');   
+}
+
+public function destroyM(Request $request){
+    $idM=$request->idM;
+    $materia=materia::findOrFail($idM);
+    $materia->delete();
+    return redirect()->route('materia');
+}
+
 //metodos admin
     public function admin(){
         return view('auth.register');

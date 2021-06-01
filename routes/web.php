@@ -24,7 +24,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('/admin/panel',[HomeController::class,'admin'])->name('admin');
-
+Route::get('/admin',[AminController::class,'main'])->name('main');
 //Rutas CRUD de alumnos
 Route::get('/admin/panel/alumnos',[AdminController::class,'alumno'])->name('alumno');
 Route::get('/admin/panel/registrar_alumno',[AdminController::class,'registraralumno'])->name('registrarAlumno');
@@ -39,6 +39,13 @@ Route::post('/admin/panel/registrodocente',[AdminController::class,'registroD'])
 Route::get('/admin/panel/update_docente/{id}/',[AdminController::class,'updatedocente'])->name('updateDocente');
 Route::patch('/admin/panel/update_docente/',[AdminController::class,'updateD'])->name('updateformD');
 Route::delete('/admin/panel/docente',[AdminController::class,'destroyD'])->name('docentedel');
+
+Route::get('/admin/panel/materias',[AdminController::class,'materia'])->name('materia');
+Route::get('/admin/panel/registrar_materia',[AdminController::class,'registrarmateria'])->name('registrarMateria');
+Route::post('/admin/panel/registromateria',[AdminController::class,'registroM'])->name('registraformM');
+Route::get('/admin/panel/update_materia/{id}/',[AdminController::class,'updatemateria'])->name('updateMateria');
+Route::patch('/admin/panel/update_materia/{id}/',[AdminController::class,'updateM'])->name('updateformM');
+Route::delete('/admin/panel/materias',[AdminController::class,'destroyM'])->name('materiadel');
 
 Route::get('/admin/panel/administrator/',[AdminController::class,'admin'])->name('admins');
 Route::get('/register',[HomeController::class,'registre'])->name('registre');
