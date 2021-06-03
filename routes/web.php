@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AlumnoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,8 +24,12 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//rutas main admin
 Route::get('/admin/panel',[HomeController::class,'admin'])->name('admin');
-Route::get('/admin',[AminController::class,'main'])->name('main');
+Route::get('/admin',[AdminController::class,'main'])->name('main');
+//rutas main alumno
+Route::get('/alumno/panel',[HomeController::class,'alumno'])->name('alumn');
+
 //Rutas CRUD de alumnos
 Route::get('/admin/panel/alumnos',[AdminController::class,'alumno'])->name('alumno');
 Route::get('/admin/panel/registrar_alumno',[AdminController::class,'registraralumno'])->name('registrarAlumno');
@@ -61,7 +66,9 @@ Route::get('/admin/panel/update_horario/{id}/',[AdminController::class,'updateho
 Route::patch('/admin/panel/update_horario/{id}/',[AdminController::class,'updateH'])->name('updateformH');
 Route::delete('/admin/panel/horarios',[AdminController::class,'destroyH'])->name('horariodel');
 
-
+//rutas de vista alumnos
+Route::get('/alumno/panel/cursos',[AlumnoController::class,'cursoA'])->name('cursoA');
+Route::post('/alumno/panel/cursosadd',[AlumnoController::class,'cursoAdd'])->name('cursoAdd');
 
 Route::get('/admin/panel/administrator/',[AdminController::class,'admin'])->name('admins');
 Route::get('/register',[HomeController::class,'registre'])->name('registre');

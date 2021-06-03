@@ -15,7 +15,7 @@
                         <div class="col col-lg-6">
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Nombre</label>
-                                <input type="text" name="nombre" pattern="[A-Z a-z]{2,15}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu nombre" >
+                                <input type="text" name="nombre" pattern="[A-Z a-z]{2,30}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu nombre" >
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Apellido paterno</label>
