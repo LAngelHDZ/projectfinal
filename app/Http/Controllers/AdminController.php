@@ -10,6 +10,9 @@ use App\Models\horario_dia;
 use App\Models\horario_materia;
 use App\Models\materia;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+
 class AdminController extends Controller
 {
     //metodod main panel
@@ -33,32 +36,81 @@ class AdminController extends Controller
     public function registroA(Request $request){
 
         $user= new User();
-        $data = [
-            "name" => $request->nombre,
-            "apellidoP" => $request->ap,
-            "apellidoM" => $request->am,
-            "email" => $request->email,
-            "password" => $request->password,
-            "type_user" => 1
-        ];
-             User::create([
-            'name' => $data['name'],
-            'apellidoP' => $data['apellidoP'],
-            'apellidoM' => $data['apellidoM'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'type_user'=> $data['type_user'],
-        ]);
 
-        $user = User::select('id')->latest('id')->first();
-        $alumno= new alumno();
-        $alumno->matricula=$request->matricula;
-        $alumno->carrera=$request->carrera;
-        $alumno->semestre=$request->semestre;
-        $alumno->user_id=$user->id;
-        $alumno->save();
-        return redirect()->route('alumno');
+        $email= User::where('email',$request->email)->count();
+        $matricula= alumno::where('matricula',$request->matricula)->count();
+
+        $rules = [
+            'nombre' => 'required|string',
+            'ap' => 'required|string',
+            'am' => 'required|string',
+            'email' => 'required|email',
+            'matricula' => 'required|string|min:5|max:15',
+            'carrera' => 'required|string',
+            'semestre' => 'required|string',
+            'password' => 'required|string'
+        ];
+
+        $messages = [ 
+            'required' => 'El campo :attribute es requerido.',
+            'email' => 'el campo :attribute debe ser un e-mail valido.',
+            'min' => 'El campo :attribute debe tener minimo de 5 caracteres',
+            'max' => 'El campo :attribute debe tener maximo de 15 caracteres'
+        ];
+
+        $validator = Validator::make($request->all(),$rules)->validate();
+
+        if($email==1 && $matricula==0){
+            $errorEmail = "El correo ya se encuentra registrado";
+                return back()->withErrors(compact('errorEmail'))->withInput();
+        
+        }else if($matricula==1 && $email==0){
+            $errorMat = "La matricula ya se encuentra registrada";
+                return back()->withErrors(compact('errorMat'))->withInput();
+        
+        }else if($matricula==1 && $email==1){
+            $errorMat = "La matricula ya se encuentra registrada";
+            $errorEmail = "El correo ya se encuentra registrado";
+                return back()->withErrors(compact('errorMat','errorEmail'))->withInput();
+        
+        }else{
+
+            $data = [
+                "name" => $request->nombre,
+                "apellidoP" => $request->ap,
+                "apellidoM" => $request->am,
+                "email" => $request->email,
+                "password" => $request->password,
+                "type_user" => 1
+            ];
+                 User::create([
+                'name' => $data['name'],
+                'apellidoP' => $data['apellidoP'],
+                'apellidoM' => $data['apellidoM'],
+                'email' => $data['email'],
+                'password' => Hash::make($data['password']),
+                'type_user'=> $data['type_user'],
+            ]);
+    
+            $user = User::select('id')->latest('id')->first();
+            $alumno= new alumno();
+            $alumno->matricula=$request->matricula;
+            $alumno->carrera=$request->carrera;
+            $alumno->semestre=$request->semestre;
+            $alumno->user_id=$user->id;
+            $alumno->save();
+
+            return redirect()->route('alumno');
+        }
+
+        // session()->flash('message', 'Post successfully updated.');
+        // return redirect()->route('alumno');
     }
+
+    // protected function verificarEmail($email){
+    //     $usuario = DB::table('users')->where('email', $email)->get();
+    //     return $usuario->count();
+    // }
 
     public function updatealumno($id){
         $id_U=alumno::select('user_id')->where('id',$id)->get();
@@ -120,6 +172,65 @@ class AdminController extends Controller
     public function registroD(Request $request){
 
         $user= new User();
+        $email= User::where('email',$request->email)->count();
+        $matricula= docente::where('matricula',$request->matricula)->count();
+        $rfc= docente::where('rfc',$request->rfc)->count();
+
+        $rules = [
+            'nombre' => 'required|string',
+            'ap' => 'required|string',
+            'am' => 'required|string',
+            'email' => 'required|email',
+            'matricula' => 'required|string|min:5|max:15',
+            'rfc' => 'required|string',
+            'password' => 'required|string'
+        ];
+
+        $messages = [ 
+            'required' => 'El campo :attribute es requerido.',
+            'email' => 'el campo :attribute debe ser un e-mail valido.',
+            'min' => 'El campo :attribute debe tener minimo de 5 caracteres',
+            'max' => 'El campo :attribute debe tener maximo de 15 caracteres'
+        ];
+
+        $validator = Validator::make($request->all(),$rules)->validate();
+
+        if($email==1 && $matricula==0 && $rfc==0){
+            $errorEmail = "El correo ya se encuentra registrado";
+                return back()->withErrors(compact('errorEmail'))->withInput();
+        
+        }else if($email==1 && $matricula==1 && $rfc==0){
+            $errorEmail = "El correo ya se encuentra registrado";
+            $errorMat = "La matricula ya se encuentra registrada";
+            return back()->withErrors(compact('errorMat','errorEmail'))->withInput();
+        
+        }else if($email==1 && $matricula==0 && $rfc==1){
+            $errorEmail = "El correo ya se encuentra registrado";
+            $errorRfc = "El RFC ya se encuentra registrado";
+            return back()->withErrors(compact('errorEmail','errorRfc'))->withInput();
+        
+        }
+        else if($matricula==1 && $email==0 && $rfc==0){
+            $errorMat = "La matricula ya se encuentra registrada";
+                return back()->withErrors(compact('errorMat'))->withInput();
+        
+        }else if($email==0 && $matricula==1 && $rfc==1){
+            $errorRfc = "El RFC ya se encuentra registrado";
+            $errorMat = "La matricula ya se encuentra registrada";
+            return back()->withErrors(compact('errorMat','errorRfc'))->withInput();
+
+        }else if($matricula==1 && $email==1 && $rfc==1){
+            $errorMat = "La matricula ya se encuentra registrada";
+            $errorEmail = "El correo ya se encuentra registrado";
+            $errorRfc = "El RFC ya se encuentra registrado";
+                return back()->withErrors(compact('errorMat','errorEmail','errorRfc'))->withInput();
+        
+        }else if($matricula==0 && $email==0 && $rfc==1){
+            $errorRfc = "El RFC ya se encuentra registrado";
+                return back()->withErrors(compact('errorRfc'))->withInput();
+        
+        }
+        else{
         $data = [
             "name" => $request->nombre,
             "apellidoP" => $request->ap,
@@ -146,11 +257,12 @@ class AdminController extends Controller
         $alumno->save();
         return redirect()->route('docente');
     }
+    }
 
     public function updatedocente($id){
         $id_U=docente::select('user_id')->where('id',$id)->get();
         $docente=docente::findOrFail($id);
-        $user=user::findOrFail($id_U);
+        $user=user::findOrFail($id_U)->get();
 
         return view('admin.updatedocente',compact('docente','user'));
     }
@@ -196,7 +308,7 @@ class AdminController extends Controller
 //metodos de agregar materias
 
 public function materia(){
-    $materias = materia::select('id','materia','descripcion','categoria','semestre')->orderBy('id','asc')->get();
+    $materias = materia::select('id','materia','clave','descripcion','categoria','semestre')->orderBy('id','asc')->get();
     return view('admin.materia',compact('materias'));
 }
 
@@ -206,16 +318,57 @@ public function registrarmateria(){
 
 public function registroM(Request $request){
   $materia=new materia();
+  $Mat= materia::where('clave',$request->clave)
+//   ->where('semestre',$request->semestre)
+//   ->where('materia',$request->materia)
+//   ->where('categoria',$request->carrera)
+  ->count();
+$Matname= materia::where('materia',$request->materia)->count();
+
+  $rules = [
+    'materia' => 'required|string',
+    'clave' => 'required|string|min:10|max:10',
+    'descripcion' => 'required|string',
+    'carrera' => 'required|string',
+    'semestre' => 'required|string'
+];
+
+$messages = [ 
+    'required' => 'El campo :attribute es requerido.',
+    'min' => 'El campo :attribute debe tener minimo de 5 caracteres',
+    'max' => 'El campo :attribute debe tener maximo de 15 caracteres'
+    
+];
+
+$validator = Validator::make($request->all(),$rules)->validate();
+if($Mat==1 && $Matname==1){
+
+    $key =materia::select('clave')->where('materia',$request->materia)->get();
+    $errorMat = "La materia ya se encuentra registrada con clave "." ".$key[0]->clave;
+    return back()->withErrors(compact('errorMat'))->withInput();
+
+}else if($Mat==0 && $Matname==1){
+    $key=materia::select('clave')->where('materia',$request->materia)->get();
+    $errorMatname = "El nombre de la materia ya se encuentra registrada con la clave "." ".$key[0]->clave;
+    return back()->withErrors(compact('errorMatname'))->withInput();
+}else if($Mat==1 && $Matname==0){
+    $nameMat=materia::select('materia')->where('clave',$request->clave)->get();
+    $errorMatname = "La clave ya se encuentra registrada con la materia de "." ".$nameMat[0]->materia;
+    return back()->withErrors(compact('errorMatname'))->withInput();
+}
+else{
     $materia->materia=$request->materia;
+    $materia->clave=$request->clave;
     $materia->descripcion=$request->descripcion;
     $materia->categoria=$request->carrera;
     $materia->semestre=$request->semestre;
     $materia->save();
     return redirect()->route('materia');
 }
+}
 
 public function updatemateria($id){
-    $materia=materia::select('id','materia','descripcion','categoria','semestre')->where('id',$id)->get();
+    $materia=materia::select('id','materia','clave','descripcion','categoria','semestre')->where('id',$id)->get();
     return view('admin.updatemateria',compact('materia'));
 }
 
@@ -223,6 +376,7 @@ public function updateM(Request $request, $id){
     
     $materia=materia::findOrFail($id);
     $materia->materia=$request->input('materia');
+    $materia->clave=$request->input('clave');
     $materia->descripcion=$request->input('descripcion');
     $materia->categoria=$request->input('carrera');
     $materia->semestre=$request->input('semestre');
@@ -243,7 +397,7 @@ public function curso(){
     $cursos = horario_materia::join('docentes','horario_materias.docente_id','=','docentes.id')
     ->join('materias','horario_materias.materia_id','=','materias.id')
     ->join('users','users.id','=','docentes.user_id')
-    ->select('horario_materias.id','docentes.id as docente_id','materias.id as materia_id','materias.materia','materias.categoria','users.name','users.apellidoP','users.apellidoM')
+    ->select('horario_materias.id','horario_materias.grupo','docentes.id as docente_id','materias.id as materia_id','materias.materia','materias.categoria','users.name','users.apellidoP','users.apellidoM')
     ->orderBy('horario_materias.id','asc')->get();
     return view('admin.curso',compact('cursos'));
 }
@@ -258,11 +412,39 @@ public function registrarcurso(){
 }
 
 public function registroC(Request $request){
-  $curso=new horario_materia();
+    $curso=new horario_materia();
+    $newcurso= horario_materia::where('docente_id',$request->docente)
+    ->where('materia_id',$request->materia)
+    ->where('grupo',$request->grupo)
+    ->count();
+    $rules = [
+        'materia' => 'required|string',
+        'docente' => 'required|string',
+        'grupo' => 'required|string',
+      
+    ];
+    
+    $messages = [ 
+        'required' => 'El campo :attribute es requerido.',
+        'min' => 'El campo :attribute debe tener minimo de 5 caracteres',
+        'max' => 'El campo :attribute debe tener maximo de 15 caracteres'
+        
+    ];
+    
+    $validator = Validator::make($request->all(),$rules)->validate();
+    if($newcurso==1){
+
+        $errorCurso = "Ya se encuentra un curso registrado con los datos seleccionados";
+        return back()->withErrors(compact('errorCurso'))->withInput();
+    
+    }else{
+ 
     $curso->docente_id=$request->docente;
     $curso->materia_id=$request->materia;
+    $curso->grupo=$request->grupo;
     $curso->save();
     return redirect()->route('curso');
+}
 }
 
 public function updatecurso($id){
@@ -311,15 +493,56 @@ public function registrarhorario($id){
 
 public function registroH(Request $request){
   $horario=new horario_dia();
+$dia= horario_dia::Where('dia',$request->dia)
+        ->where('horarioM_id',$request->id)
+        // ->where('hora',$request->hora)
+        ->count();
+        $hora= horario_dia::where('dia',$request->dia)
+        ->where('hora',$request->hora)
+        ->where('aula',$request->aula)
+        ->count();
+  $rules = [
+    'hora' => 'required|string',
+    'dia' => 'required|string',
+    'aula' => 'required|string',
+  
+];
+
+$messages = [ 
+    'required' => 'El campo :attribute es requerido.',
+    'min' => 'El campo :attribute debe tener minimo de 5 caracteres',
+    'max' => 'El campo :attribute debe tener maximo de 15 caracteres'
+    
+];
+
+$validator = Validator::make($request->all(),$rules)->validate();
+if($dia==1){
+
+    $errorHora = "Ya se encuentra un horario registrado para el dia"." ".$request->dia;
+    return back()->withErrors(compact('errorHora'))->withInput();
+
+}else if($hora==1){
+$materia=horario_dia::join('horario_materias','horario_dias.horarioM_id','=','horario_materias.id')
+->join('materias','horario_materias.materia_id','=','materias.id')
+->select('materias.materia')
+->where('horario_dias.dia',$request->dia)
+->where('horario_dias.hora',$request->hora)
+->where('horario_dias.aula',$request->aula)->get();
+    $errorHora = "Ya se encuentra un horario registrado en la materia de"." ".$materia[0]->materia;
+    return back()->withErrors(compact('errorHora'))->withInput();
+
+}else{
+  
     $horario->hora=$request->hora;
     $horario->dia=$request->dia;
     $horario->aula=$request->aula;
     $horario->horarioM_id=$request->id;
     $horario->save();
     
-    $alert="Horario agregado";
+    // $alert="Horario agregado";
+    Session::flash('message','Horario agregado exitosamente');
     return back();
-    
+}
 }
 
 public function updatehorario($id){

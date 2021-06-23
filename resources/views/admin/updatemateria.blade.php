@@ -15,7 +15,11 @@
                     @method('patch')
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Materia</label>
-                                <input type="textarea" name="materia"  class="form-control bg-dark-x border-0"  value="{{$materia[0]->materia}}">
+                                <input type="text" name="materia"  class="form-control bg-dark-x border-0"  value="{{$materia[0]->materia}}">
+                            </div>
+                            <div class="mb-4">
+                                <label  class="form-label font-weight-bold text-dark">Clave</label>
+                                <input type="text" name="clave"  class="form-control bg-dark-x border-0"  value="{{$materia[0]->clave}}">
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Descripción</label>

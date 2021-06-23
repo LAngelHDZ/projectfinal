@@ -14,6 +14,7 @@ class horario_materia extends Model
     protected $fillable = [
         'id',
         'docente_id',
-        'materia_id'
+        'materia_id',
+        'grupo'
     ];
 }

@@ -16,9 +16,10 @@ class CreateHorarioMateriasTable extends Migration
         Schema::create('horario_materias', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('docente_id');
-            $table->foreign('docente_id')->references('id')->on('docentes');
+            $table->foreign('docente_id')->references('id')->on('docentes')->onDelete('cascade');
             $table->unsignedBigInteger('materia_id');
-            $table->foreign('materia_id')->references('id')->on('materias');
+            $table->foreign('materia_id')->references('id')->on('materias')->onDelete('cascade');
+            $table->char('grupo');
             $table->timestamps();
         });
     }

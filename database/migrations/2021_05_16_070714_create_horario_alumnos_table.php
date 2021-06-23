@@ -18,6 +18,7 @@ class CreateHorarioAlumnosTable extends Migration
             $table->unsignedBigInteger('horarioM_id');
             $table->foreign('horarioM_id')->references('id')->on('horario_materias');
             $table->unsignedBigInteger('alumno_id');
+            $table->unsignedBigInteger('status');   
             $table->foreign('alumno_id')->references('id')->on('alumnos'); 
             $table->timestamps();
         });

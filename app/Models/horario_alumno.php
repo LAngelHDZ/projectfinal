@@ -14,6 +14,7 @@ class horario_alumno extends Model
     protected $fillable = [
         'id',
         'horarioM_id',
-        'alumno_id'
+        'alumno_id',
+        'status'
     ];
 }

@@ -19,6 +19,7 @@
                 <th scope="col">Docente</th>
                 <th scope="col">Materia</th>
                 <th scope="col">Carrera</th>
+                <th scope="col">Grupo</th>
                 <th scope="col ">Horario</th>
                 <th scope="col ">Editar</th>
                 <th scope="col">Eliminar</th>
@@ -36,6 +37,7 @@
                 <td>{{$curso->name.' '.$curso->apellidoP.' '.$curso->apellidoM}}</td>
                 <td class="mt-3 ">{{$curso->materia}}</td>
                 <td class="mt-3 ">{{$curso->categoria}}</td>
+                <td class="mt-3 ">{{$curso->grupo}}</td>
                 <td class="mt-3 ">
                   <a href="{{route('horario',$curso->id)}}" class="btn btn-link py-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-calendar-plus" viewBox="0 0 16 16">

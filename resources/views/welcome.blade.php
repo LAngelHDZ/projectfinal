@@ -11,10 +11,12 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    @livewireStyles
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    
+{{-- <link rel="stylesheet" href="sweetalert2.min.css"> --}}
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -79,5 +81,42 @@
             @yield('content')
         </main>
     </div>
+    
+
+
+    <footer>
+
+
+<p>esto es un pie de pagina</p>
+
+
+    </footer>
+    @livewireScripts
+    @stack('js')
+    
+    {{-- <script>
+        Livewire.on('alert',function(message)
+        {
+        const Toast = Swal.mixin({
+        
+        toast: true,
+        background:'#fff',
+        position: 'top-end',
+        showConfirmButton: false,
+        timer:3000,
+        timerProgressBar: true,
+        didOpen: (toast)=>{
+            toast.addEventListener('mouseenter',Swal.stopTimer)
+            toast.addEventListener('mouseleave',Swal.resumeTimer)
+
+        }
+        })
+        Toast.fire({
+            icon:'success',
+            title: message
+        })
+        })
+     </script> --}}
+
 </body>
 </html>

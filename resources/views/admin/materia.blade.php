@@ -17,6 +17,7 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Materia</th>
+                <th scope="col">Clave</th>
                 <th scope="col">Carrera</th>
                 <th scope="col">Semestre</th>
                 <th scope="col">Descripción</th>
@@ -34,6 +35,7 @@
               <tr>
                 <th scope="row">{{$int+=1}}</th>
                 <td>{{$materia->materia}}</td>
+                <td>{{$materia->clave}}</td>
                 <td class="px-3 ">{{$materia->categoria}}</td>
                 <td class="px-3 ">{{$materia->semestre}}</td>
                 <td class="px-3 ">{{$materia->descripcion}}</td>

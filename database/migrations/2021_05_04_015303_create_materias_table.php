@@ -16,6 +16,7 @@ class CreateMateriasTable extends Migration
         Schema::create('materias', function (Blueprint $table) {
             $table->id();
             $table->String('materia');
+            $table->String('clave')->unique();
             $table->String('descripcion');
             $table->String('categoria');
             $table->integer('semestre');

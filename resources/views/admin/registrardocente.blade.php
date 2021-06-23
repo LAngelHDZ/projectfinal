@@ -15,19 +15,34 @@
                         <div class="col col-lg-6">
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Nombre</label>
-                                <input type="text" name="nombre" pattern="[A-Z a-z]{2,20}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu nombre" >
+                                <input type="text" name="nombre" value="{{old('nombre')}}" pattern="[A-Z a-z]{2,20}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu nombre" >
+                                @error('nombre')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Apellido paterno</label>
-                                <input type="text" name="ap" pattern="[A-Z a-z]{2,20}" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa Apellido paterno">
+                                <input type="text" name="ap" value="{{old('ap')}}" pattern="[A-Z a-z]{2,20}" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa Apellido paterno">
+                                @error('ap')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Apellido materno</label>
-                                <input type="text" name="am" pattern="[A-Z a-z]{2,20}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu Apellido materno" >
+                                <input type="text" name="am" value="{{old('am')}}" pattern="[A-Z a-z]{2,20}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu Apellido materno" >
+                                @error('am')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Matricula</label>
-                                <input type="text" name="matricula" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa matricula" >
+                                <input type="text" name="matricula" value="{{old('matricula')}}" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa matricula" >
+                                @error('matricula')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                           @error('errorMat')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                            
                         </div>
@@ -36,16 +51,31 @@
                             
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">RFC</label>
-                                <input type="text" name="rfc" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu Apellido materno" >
+                                <input type="text" name="rfc" value="{{old('rfc')}}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu Apellido materno" >
+                                @error('rfc')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                            @error('errorRfc')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Correo</label>
-                                <input type="email" name="email" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa correo" >
+                                <input type="email" name="email" value="{{old('email')}}" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa correo" >
+                                @error('email')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                            @error('errorEmail')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
 
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Contraseña</label>
                                 <input type="password" name="password" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa contraseña" >
+                                @error('password')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                         </div>                       
                     </div>

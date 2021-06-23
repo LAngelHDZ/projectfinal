@@ -14,6 +14,7 @@ class materia extends Model
     protected $fillable = [
         'id',
         'materia',
+        'clave',
         'descripcion',
         'categoria'
     ];

@@ -9,32 +9,64 @@
         <div class="col-lg-12 flex-column align-items-end min-vh-100 mx-auto">
             <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
                 <h1 class="font-weight-bold mb-4 text-dark  text-center">Registro de alumno</h1>
+                                    {{-- @if ($errors->any())
+                        <div {{ $attributes }}>
+                            <div class="">{{ __('Whoops! Something went wrong.') }}</div>
+
+                            <ul class="">
+                               
+                                    <li>{{ $errors}}</li>
+                                
+                            </ul>
+                        </div>
+                    @endif --}}
                 <form  action="{{route('registraformA')}}"  method="POST" class="mb-5">
                     @csrf
                     <div class="row g-0 ">
                         <div class="col col-lg-6">
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Nombre</label>
-                                <input type="text" name="nombre" pattern="[A-Z a-z]{2,30}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu nombre" >
+                                <input type="text" name="nombre"  value="{{old('nombre')}}" pattern="[A-Z a-z]{2,30}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu nombre" >
+                                @error('nombre')
+                                    <span class="text-danger">{{$message}}</span>
+                                @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Apellido paterno</label>
-                                <input type="text" name="ap" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa Apellido paterno">
+                                <input type="text" name="ap" value="{{old('ap')}}" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa Apellido paterno">
+                                @error('ap')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Apellido materno</label>
-                                <input type="text" name="am" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu Apellido materno" >
+                                <input type="text" name="am" value="{{old('am')}}" class="form-control bg-dark-x border-0"  placeholder="Ingresa tu Apellido materno" >
+                                @error('am')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Correo</label>
-                                <input type="email" name="email" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa correo" >
+                                <input type="email" name="email" value="{{old('email')}}" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa correo" >
+                                @error('email')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                            @error('errorEmail')
+                            <span class="text-danger">{{$message}}</span>
+                        @enderror
                             </div>
                         </div>
 
                         <div class="col col-lg-6">
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Matricula</label>
-                                <input type="text" name="matricula" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa matricula" >
+                                <input type="text" name="matricula" value="{{old('matricula')}}" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa matricula" >
+                                @error('matricula')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
+                            @error('errorMat')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Carrera</label>
@@ -45,6 +77,9 @@
                                     <option value="IGE" >IGE</option>
                                     <option value="IEM" >IEM</option>
                                 </select>
+                                @error('carrera')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Semestre</label>
@@ -63,10 +98,16 @@
                                     <option value="11">11</option>
                                     <option value="12" >12</option>
                                 </select>
+                                @error('semestre')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                             <div class="mb-4">
                                 <label  class="form-label font-weight-bold text-dark">Contraseña</label>
                                 <input type="password" name="password" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa contraseña" >
+                                @error('password')
+                                <span class="text-danger">{{$message}}</span>
+                            @enderror
                             </div>
                         </div>                       
                     </div>
